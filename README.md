@@ -1,4 +1,4 @@
-# Resume
+# Resume - Nick VanRensselaer
 Located in this repository are a few projects that represent my growing skills as a programmer. 
 
 
