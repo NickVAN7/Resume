@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Beartooth Hiking Company</title>
+        <meta charset="utf-8">
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src=https://code.jquery.com/jquery-1.12.4.js> </script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"> </script>
+	
+		<link rel="stylesheet" type="text/css" href="style.css"> 
+        
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+			function sendRequest(url) {
+				// get form parameters and translate them to a JSON object
+				// that is mapped to a JSON/Java object in service
+				var viewArr = $("#myForm").serializeArray();
+			  	var view = {};
+			  	// need to convert { name:"VarName", value:"ValName"} to {VarName:"ValName"}
+			  	for (var i in viewArr) {
+			    	view[viewArr[i].name] = viewArr[i].value;
+			  	}
+                          
+                // call back to service with post containing JSON data and on
+                // return process results back into page          
+                $.ajax({
+                    type:"POST",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    data: JSON.stringify(view),
+                    url: url,
+                    // you will want to update success function to get specific
+                    // JSON data fields for output back to the original HTML page
+                    success: function(data) {
+						// this sets the html content of the html object
+						// with id of reponseArea.
+						
+						//var output = JSON.stringify(data);
+						//console.log("data is " + test);
+						//console.log("message data is " + data.message);
+
+						$("#responseArea").html("<b>You have picked the following options:</b> <br>" 
+								+ "Start Date - " + data.date + "<br>" 
+								+ "Hike Name - " + data.hikeName + "<br>" 
+								+ "Trip Duration - " + data.duration + "<br>" 
+								+ "People Attending - " + data.attending + "<br>" 
+								+ "<br>" 
+								+ data.message );
+								//+ "The JSON output is: " + output);
+						
+                 	}
+                });
+			};
+			
+
+		</script>
+	</head>
+	<body>
+		<h1>Welcome to Beartooth Hiking Company</h1>
+		<h3>Please choose your options</h3>
+		<!-- the form contains the input elements to collect specific information
+			 as you did in earlier work.  Make sure names of parameters correspond
+			 to the field values in the desired JSON/Java object. -->
+		<form id="myForm">
+			<!-- Add your gui widgets and input elements here -->
+			<!-- Keep the button for submitting your form, but you need to 
+				 update the parameter, url, to reference your back end 
+				 service that will process the input data -->
+			
+			<p> Date: <input type="text" id="datepicker" name="date"> </p>
+		
+			<script> $(function() {
+				$("#datepicker").datepicker();
+				});
+			</script>
+			
+			Trip: <select name="hikeName" id="hikeName">
+				<option value="" > - - - </option>
+				<option value="GARDINER"> Gardiner Lake Hike </option>
+				<option value="HELLROARING"> Hellroaring Plateau Hike </option>
+				<option value="BEATEN"> Beaten Path Hike </option>
+			</select> 
+			
+			<br>
+			<br>
+			
+			Trip Duration: <select name="duration">
+				<option value=""> - - - </option>
+				<option value="2"> 2 </option>
+				<option value="3"> 3 </option>
+				<option value="4"> 4 </option>
+				<option value="5"> 5 </option>
+				<option value="7"> 7 </option>
+			</select> 
+	
+			<br>
+			<br>
+			
+			<label for="attending"> People Attending: </label> 
+			<input type="text" name="attending">
+			 
+			<br>
+			<br>
+			
+			<div> <b> Possible Durations: </b> <br>
+				Gardiner Lake - 3 / 5 days <br>
+				Hellroaring Plateau - 2 / 3 / 4 days <br>
+				Beaten Path - 5 / 7 days <br>
+			</div>	 
+			
+			<br>
+			
+				 
+            <button class="button" type="button" onclick="sendRequest('webresources/example/loadJson')">Get Rate</button>
+            <br>
+            <br>
+		</form>     
+		<!-- This is nothing more than a labeled "output area" for your results or errors -->
+        <div id="responseArea" class="output">
+        	<pre>
+        	
+        	</pre>
+        
+        </div>
+	</body>
+</html>
